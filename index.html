@@ -1,0 +1,1521 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Xavier Perez — Portfolio 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet" />
+<style>
+  /* ----------  TOKENS  ---------- */
+  :root{
+    --teal:        #2F5E5E;
+    --teal-deep:   #264D4D;
+    --teal-soft:   #3B7070;
+    --paper:       #EDECE8;
+    --paper-2:     #E3E1DB;
+    --ink:         #1A1A1A;
+    --ink-2:       #3B3B3B;
+    --muted:       #8A8A88;
+    --coral:       #E86A4F;
+    --white:       #FFFFFF;
+    --rail-w:      clamp(260px, 22vw, 340px);
+    --nav-h:       72px;
+    --pad:         clamp(20px, 4vw, 56px);
+    --radius:      2px;
+  }
+
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  html{background:var(--paper);}
+  body{
+    font-family:"Public Sans",system-ui,sans-serif;
+    font-weight:300;
+    color:var(--ink);
+    background:var(--paper);
+    min-height:100dvh;
+    overflow:hidden;           /* we manage scroll ourselves on desktop */
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  /* ----------  SHELL  ---------- */
+  .shell{
+    position:fixed;
+    inset:0;
+    display:grid;
+    grid-template-columns: var(--rail-w) 1fr;
+    grid-template-rows: 1fr var(--nav-h);
+    grid-template-areas:
+      "rail work"
+      "nav  nav";
+  }
+
+  /* ----------  LEFT RAIL (still)  ---------- */
+  .rail{
+    grid-area: rail;
+    background: var(--teal);
+    color: var(--white);
+    padding: var(--pad) clamp(20px, 2.4vw, 32px) clamp(24px, 3vw, 40px) clamp(20px, 2.4vw, 32px);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    overflow:hidden;
+    transition: background .4s ease;
+  }
+  .rail::after{
+    content:"";
+    position:absolute; inset:auto 0 0 0; height:1px;
+    background: rgba(255,255,255,.08);
+  }
+
+  .rail .brand-logo{
+    width: clamp(64px, 6vw, 88px);
+    height: auto;
+    object-fit: contain;
+    margin: 0 0 28px -4px;
+    padding: 0;
+    display:block;
+  }
+
+  .brand{
+    margin: 0 0 auto 0;
+  }
+  .wordmark{
+    font-weight:800;
+    font-size: clamp(22px, 7.5vw, 28px);
+    letter-spacing:.01em;
+    line-height:1;
+    margin:0;
+    color: var(--white);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .wordmark-sub{
+    font-size: 11px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    opacity:.55;
+    font-weight:500;
+    margin-top: 8px;
+    color: var(--white);
+  }
+  /* keep old .wordmark small working if referenced */
+  .wordmark small{
+    display:block;
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    opacity:.55;
+    margin-top:10px;
+    font-weight:500;
+  }
+
+  /* rail body is swappable by nav */
+  .rail-body{
+    flex:1 1 auto;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding: clamp(20px, 3vw, 40px) 0;
+  }
+
+  .panel{ display:none !important; }
+  .panel.is-active{ display:block !important; animation: fade .45s ease both; }
+  .panel--about.is-active{ display:grid !important; }
+  @keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+
+  /* HOME panel */
+  .panel--home h1{
+    font-weight:200;
+    font-size: clamp(24px, 2.4vw, 34px);
+    line-height:1.2;
+    letter-spacing:-.015em;
+    margin:0 0 18px 0;
+    max-width: 18ch;
+  }
+  .panel--home p{
+    font-size:14px; line-height:1.65;
+    color: rgba(255,255,255,.78);
+    max-width: 38ch;
+    margin:0 0 22px;
+  }
+  .tagstrip{
+    display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;
+  }
+  .tag{
+    border:1px solid rgba(255,255,255,.25);
+    padding:6px 12px;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    border-radius:999px;
+    color: rgba(255,255,255,.85);
+  }
+
+  /* PORTFOLIO panel */
+  .panel--portfolio .label{
+    font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color:rgba(255,255,255,.55); margin-bottom:22px;
+  }
+  .proj-list{
+    list-style:none; padding:0; margin:0;
+    display:flex; flex-direction:column; gap:2px;
+  }
+  .proj-list li{
+    display:flex; align-items:baseline; gap:12px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    cursor:pointer;
+    transition: color .2s, padding .25s;
+    font-size: 14px;
+    font-weight:300;
+    color: rgba(255,255,255,.78);
+    line-height:1.3;
+  }
+  .proj-list li:hover{
+    color:var(--white);
+    padding-left: 8px;
+  }
+  .proj-list .n{
+    font-variant-numeric: tabular-nums;
+    font-size:12px;
+    color: rgba(255,255,255,.4);
+    min-width: 28px;
+  }
+  .proj-list li.is-current{
+    color:var(--white);
+  }
+  .proj-list li.is-current .n{ color: var(--coral); }
+
+  /* ABOUT panel */
+  .panel--about{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .panel--about h2{
+    font-weight:500;
+    font-size: clamp(22px, 2vw, 30px);
+    margin:0 0 14px 0;
+    letter-spacing:-.01em;
+  }
+  .panel--about p{
+    font-size:14px; line-height:1.7;
+    color: rgba(255,255,255,.8);
+    margin:0 0 14px 0;
+    max-width: 48ch;
+  }
+  .portrait{
+    width: min(320px, 70%);
+    aspect-ratio: 3/4;
+    background:
+      repeating-linear-gradient(45deg, rgba(255,255,255,.06) 0 8px, rgba(255,255,255,.02) 8px 16px),
+      #1f4545;
+    border:1px solid rgba(255,255,255,.12);
+    display:flex; align-items:flex-end; justify-content:flex-start;
+    padding:10px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10px;
+    letter-spacing:.08em;
+    color: rgba(255,255,255,.45);
+    text-transform:uppercase;
+  }
+
+  /* CONTACT panel */
+  .panel--contact{ }
+  .panel--contact h2{
+    font-weight:300;
+    font-size: clamp(22px, 2vw, 30px);
+    margin:0 0 30px 0;
+    color:var(--white);
+  }
+  .contact-row{
+    margin-bottom: 26px;
+  }
+  .contact-row .k{
+    font-size:12px;
+    color: rgba(255,255,255,.55);
+    letter-spacing:.02em;
+    margin-bottom:4px;
+  }
+  .contact-row .v{
+    font-size: clamp(18px, 1.6vw, 22px);
+    font-weight:400;
+    color: var(--white);
+    letter-spacing:.01em;
+  }
+  .contact-row a{ color:inherit; text-decoration:none; border-bottom:1px solid transparent; transition:border-color .2s;}
+  .contact-row a:hover{ border-color: var(--coral); }
+
+  /* ----------  HERO / LANDING  ---------- */
+  .hero{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(20px, 2.4vw, 32px);
+    padding-top: clamp(8px, 2vw, 24px);
+    position: relative;
+    text-align: center;
+  }
+  /* soft halo bg behind the card, fades out on scroll-down */
+  .hero::before{
+    content:"";
+    position:absolute;
+    inset: -40px -60px 120px -60px;
+    background:
+      radial-gradient(60% 55% at 20% 25%, rgba(47,94,94,.18), transparent 70%),
+      radial-gradient(55% 50% at 85% 15%, rgba(232,106,79,.14), transparent 70%),
+      radial-gradient(70% 60% at 50% 90%, rgba(47,94,94,.10), transparent 75%);
+    filter: blur(6px);
+    z-index: -1;
+    pointer-events:none;
+  }
+
+  .hero-card{
+    position: relative;
+    border-radius: 28px;
+    padding: clamp(32px, 4.5vw, 72px) clamp(28px, 4vw, 64px);
+    background:
+      radial-gradient(120% 80% at 85% -10%, rgba(232,106,79,.18), transparent 55%),
+      radial-gradient(90% 80% at 10% 110%, rgba(59,112,112,.35), transparent 60%),
+      linear-gradient(180deg, var(--teal-deep), var(--teal));
+    color: var(--white);
+    overflow: hidden;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.08) inset,
+      0 30px 60px -30px rgba(0,0,0,.45);
+    display:grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+      "kicker logo"
+      "quote  logo"
+      "cta    logo";
+    gap: clamp(16px, 2vw, 28px) clamp(24px, 4vw, 56px);
+    align-items: start;
+  }
+  .hero-card::after{
+    /* subtle grain */
+    content:"";
+    position:absolute; inset:0;
+    background-image: radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px);
+    background-size: 3px 3px;
+    opacity:.6;
+    mix-blend-mode: overlay;
+    pointer-events:none;
+  }
+  .hero-kicker{
+    grid-area: kicker;
+    font-size: 12px;
+    letter-spacing:.22em;
+    text-transform: uppercase;
+    color: var(--coral);
+    font-weight: 600;
+    opacity:.9;
+  }
+  .hero-logo{
+    grid-area: logo;
+    align-self: center;
+    justify-self: end;
+    padding: 8px;
+  }
+  .hero-logo img{
+    width: clamp(96px, 11vw, 168px);
+    height:auto;
+    display:block;
+    filter: drop-shadow(0 6px 20px rgba(0,0,0,.35));
+  }
+  .hero-quote{
+    grid-area: quote;
+    margin: 0;
+    font-weight: 300;
+    font-size: clamp(22px, 3.1vw, 44px);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    max-width: 22ch;
+    color: #F3F1EC;
+  }
+  .hero-quote em{
+    font-style: normal;
+    font-weight: 600;
+    color: var(--white);
+    background: linear-gradient(180deg, transparent 62%, rgba(232,106,79,.55) 62%, rgba(232,106,79,.55) 92%, transparent 92%);
+    padding: 0 .08em;
+  }
+  .hero-cta-row{
+    grid-area: cta;
+    display:flex;
+    flex-wrap: wrap;
+    align-items:center;
+    gap: 12px;
+    margin-top: 4px;
+  }
+  .hero-cta{
+    display:inline-flex;
+    align-items:center;
+    gap: 10px;
+    padding: 14px 22px;
+    background: var(--white);
+    color: var(--teal-deep);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    text-decoration:none;
+    border-radius: 999px;
+    transition: transform .2s ease, background .2s ease, color .2s ease;
+  }
+  .hero-cta:hover{ transform: translateY(-1px); background: var(--coral); color:var(--white); }
+  .hero-cta svg{ transition: transform .2s ease; }
+  .hero-cta:hover svg{ transform: translateX(3px); }
+  .hero-cta--ghost{
+    background: transparent;
+    color: rgba(255,255,255,.85);
+    border: 1px solid rgba(255,255,255,.25);
+  }
+  .hero-cta--ghost:hover{ background: rgba(255,255,255,.08); color: var(--white); }
+
+  /* feature bubbles row */
+  .hero-bubbles{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(12px, 1.4vw, 20px);
+  }
+  .bubble{
+    position:relative;
+    border-radius: 22px;
+    padding: clamp(18px, 2vw, 26px);
+    background: rgba(255,255,255,.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(0,0,0,.06);
+    box-shadow: 0 10px 30px -18px rgba(0,0,0,.25);
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .bubble:hover{
+    transform: translateY(-2px);
+    background: #fff;
+    box-shadow: 0 18px 40px -22px rgba(0,0,0,.3);
+  }
+  .bubble-head{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .bubble-icon{
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    background: var(--teal);
+    color: var(--white);
+    display:inline-flex; align-items:center; justify-content:center;
+    flex-shrink: 0;
+  }
+  .bubble-chips{
+    display:flex; flex-wrap:wrap; gap: 4px;
+    justify-content: flex-end;
+  }
+  .chip-sm{
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgba(47,94,94,.08);
+    color: var(--teal-deep);
+    border: 1px solid rgba(47,94,94,.14);
+    font-weight: 600;
+  }
+  .bubble h3{
+    margin: 4px 0 0;
+    font-weight: 600;
+    font-size: clamp(18px, 1.5vw, 22px);
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .bubble p{
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  .hero-scrollcue{
+    align-self: center;
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 8px 14px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 999px;
+    transition: color .2s ease, transform .2s ease;
+  }
+  .hero-scrollcue:hover{ color: var(--teal-deep); transform: translateY(2px); }
+  .hero-scrollcue svg{ animation: bob 1.8s ease-in-out infinite; }
+  @keyframes bob{ 0%,100%{transform: translateY(0);} 50%{transform: translateY(4px);} }
+
+  @media (max-width: 860px){
+    .hero-card{
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "logo"
+        "kicker"
+        "quote"
+        "cta";
+      padding: 28px 22px;
+      gap: 14px;
+    }
+    .hero-logo{ justify-self: start; }
+    .hero-logo img{ width: 84px; }
+    .hero-quote{ font-size: 24px; }
+    .hero-bubbles{ grid-template-columns: 1fr; }
+  }
+
+  /* ----------  WORK (scrollable right side)  ---------- */
+  .work{
+    grid-area: work;
+    background: var(--paper);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted) transparent;
+  }
+  .work::-webkit-scrollbar{ width:8px; }
+  .work::-webkit-scrollbar-thumb{ background: rgba(0,0,0,.18); border-radius:999px; }
+  .work::-webkit-scrollbar-track{ background: transparent; }
+
+  .work-inner{
+    padding: var(--pad);
+    padding-bottom: calc(var(--pad) * 2);
+    display:flex;
+    flex-direction:column;
+    gap: clamp(32px, 4vw, 64px);
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  /* when home (no rail), give the hero more breathing room */
+  .shell.is-home .work-inner{
+    max-width: 1200px;
+  }
+
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:16px;
+    padding-bottom:14px;
+    border-bottom:1px solid rgba(0,0,0,.12);
+  }
+  .section-head .t{
+    font-weight:400; font-size: clamp(14px, 1.1vw, 16px);
+    letter-spacing:.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin:0;
+  }
+  .section-head .c{
+    font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Project card */
+  .proj{
+    scroll-margin-top: 12px;
+    background: var(--white);
+    border: 1px solid rgba(0,0,0,.08);
+    padding: clamp(24px, 3.5vw, 56px);
+    display:grid;
+    grid-template-columns: 220px 1fr;
+    gap: clamp(24px, 3vw, 48px);
+    position:relative;
+  }
+
+  /* filled project cards with real page images */
+  .proj--filled {
+    display: block;
+    background: var(--white);
+    border: 1px solid rgba(0,0,0,.08);
+    padding: 0;
+    overflow: hidden;
+  }
+  .proj--filled .proj-label {
+    padding: clamp(16px, 2vw, 24px) clamp(24px, 3vw, 40px);
+    border-bottom: 1px solid rgba(0,0,0,.06);
+  }
+  .proj--filled .proj-pages {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--paper-2);
+  }
+  .proj--filled .proj-pages img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  /* thumbnail images inside home-works-grid */
+  .home-work-box img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform .4s ease;
+    z-index: 0;
+  }
+  .home-work-box:hover img { transform: scale(1.04); }
+  .home-work-box .n,
+  .home-work-box .t { z-index: 1; }
+  /* darken overlay so text stays readable over images */
+  .home-work-box::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.55) 0%, rgba(0,0,0,.1) 50%, transparent 100%);
+    z-index: 0;
+    transition: opacity .2s;
+  }
+  .home-work-box:hover::after { opacity: .7; }
+  .home-work-box .n { color: rgba(255,255,255,.7) !important; }
+  .home-work-box .t { color: rgba(255,255,255,.95) !important; }
+
+  /* empty placeholder project cards (titles-only, grey) */
+  .proj--empty{
+    display:block;
+    background: var(--paper-2);
+    border: 1px solid rgba(0,0,0,.08);
+    padding: clamp(40px, 6vw, 80px) clamp(32px, 4vw, 56px);
+    aspect-ratio: 17 / 11;
+    min-height: 360px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    transition: background .25s, transform .25s;
+  }
+  .proj--empty:hover{
+    background: #D9D7D1;
+  }
+  .proj--empty .proj-label{
+    display:flex;
+    align-items:baseline;
+    gap: 16px;
+  }
+  .proj--empty .proj-num{
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .16em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .proj--empty h3{
+    margin: 0;
+    font-weight: 600;
+    font-size: clamp(22px, 2.2vw, 32px);
+    letter-spacing: -.01em;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  @media (max-width: 860px){
+    .proj--empty{ min-height: 240px; aspect-ratio: auto; }
+  }
+  .proj .toc{
+    font-size:12px;
+    color: var(--ink-2);
+    line-height:1.9;
+  }
+  .proj .toc .toc-title{
+    font-weight:600;
+    color: var(--ink);
+    margin-bottom: 10px;
+    font-size:14px;
+  }
+  .proj .toc ol{ padding:0; margin:0; list-style:none; }
+  .proj .toc li{ font-variant-numeric: tabular-nums; }
+  .proj .toc li.is-current{ color:var(--coral); font-weight:500; }
+
+  .proj .body{
+    display:flex;
+    flex-direction:column;
+    gap: 20px;
+  }
+  .proj h3{
+    font-weight:600;
+    font-size: clamp(22px, 2vw, 30px);
+    letter-spacing:-.01em;
+    margin:0;
+    line-height:1.15;
+  }
+  .proj .meta{
+    display:flex; align-items:flex-start; justify-content:space-between;
+    gap:24px;
+    flex-wrap: wrap;
+  }
+  .proj .desc{
+    font-size:14px; line-height:1.7;
+    color: var(--ink-2);
+    max-width: 60ch;
+    margin:0;
+  }
+  .proj .mediums{
+    font-size:12px;
+    color: var(--ink-2);
+    text-align:right;
+    min-width: 160px;
+    line-height:1.6;
+  }
+  .proj .mediums .k{
+    display:block; color:var(--muted); font-size:11px;
+    letter-spacing:.12em; text-transform:uppercase;
+    margin-bottom: 4px;
+  }
+
+  .proj .gallery{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .proj .gallery .tall{ grid-row: span 2; }
+  .proj .gallery .wide{ grid-column: span 2; }
+
+  .ph{
+    aspect-ratio: 4/3;
+    background:
+      repeating-linear-gradient(45deg, rgba(0,0,0,.04) 0 8px, rgba(0,0,0,.015) 8px 16px),
+      var(--paper-2);
+    border:1px solid rgba(0,0,0,.08);
+    display:flex; align-items:flex-end; justify-content:flex-start;
+    padding:10px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10px;
+    letter-spacing:.06em;
+    color: var(--muted);
+    text-transform: uppercase;
+    position:relative;
+    overflow:hidden;
+  }
+  .ph.dark{
+    background:
+      repeating-linear-gradient(45deg, rgba(255,255,255,.04) 0 8px, rgba(255,255,255,.01) 8px 16px),
+      #1c2a33;
+    color: rgba(255,255,255,.55);
+    border-color: rgba(255,255,255,.08);
+  }
+  .ph.coral{
+    background:
+      repeating-linear-gradient(45deg, rgba(0,0,0,.05) 0 8px, transparent 8px 16px),
+      var(--coral);
+    color: rgba(255,255,255,.85);
+  }
+  .ph.teal{
+    background:
+      repeating-linear-gradient(45deg, rgba(255,255,255,.05) 0 8px, rgba(255,255,255,.01) 8px 16px),
+      var(--teal);
+    color: rgba(255,255,255,.65);
+    border-color: rgba(255,255,255,.08);
+  }
+
+  /* chip showing project "logo" placeholder block */
+  .proj .chip{
+    background: var(--white);
+    border:1px solid rgba(0,0,0,.1);
+    padding: 36px 32px;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800;
+    font-size: clamp(28px, 3vw, 40px);
+    letter-spacing:-.01em;
+    aspect-ratio: 4/3;
+    color: var(--ink);
+  }
+
+  /* ----------  BOTTOM NAV  ---------- */
+  .nav{
+    grid-area: nav;
+    background: var(--paper);
+    border-top: 1px solid rgba(0,0,0,.1);
+    display:flex;
+    align-items:stretch;
+    justify-content: space-between;
+    padding: 0 var(--pad);
+    position:relative;
+    z-index: 10;
+  }
+  .nav .brand-mini{
+    display:flex; align-items:center; gap:10px;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+  }
+  .nav .brand-mini .dot{
+    width:8px; height:8px; background:var(--coral); border-radius:999px;
+  }
+  .nav-links{
+    display:flex; align-items:center; gap: clamp(8px, 1.5vw, 24px);
+    margin-left: 24px;
+  }
+  .nav-btn{
+    appearance:none; background:none; border:0;
+    font: inherit;
+    color: var(--ink-2);
+    padding: 10px 14px;
+    font-size: 14px;
+    letter-spacing:.02em;
+    cursor:pointer;
+    border-radius: 2px;
+    position:relative;
+    transition: color .2s;
+  }
+  .nav-btn:hover{ color: var(--ink); }
+  .nav-btn[aria-current="page"]{ color: var(--ink); font-weight:500; }
+  .nav-btn[aria-current="page"]::before{ content:"["; margin-right:2px; color:var(--coral); }
+  .nav-btn[aria-current="page"]::after{ content:"]"; margin-left:2px; color:var(--coral); }
+
+  .nav-right{
+    display:flex; align-items:center; gap: 14px;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ----------  MOBILE  ---------- */
+  @media (max-width: 860px){
+    body{ overflow:auto; }
+    .shell{
+      position:static;
+      display:block;
+      height:auto;
+    }
+    .rail{
+      position: sticky;
+      top:0;
+      min-height: 70vh;
+      padding: 28px 24px 40px;
+    }
+    .work{
+      overflow: visible;
+      height:auto;
+    }
+    .work-inner{
+      padding: 28px 20px 120px;
+      gap: 28px;
+    }
+    .proj{
+      grid-template-columns: 1fr;
+      padding: 24px;
+      gap: 20px;
+    }
+    .proj .toc{ order: 2; border-top:1px solid rgba(0,0,0,.08); padding-top:16px;}
+    .proj .gallery{ grid-template-columns: 1fr; }
+    .proj .gallery .tall{ grid-row: auto; }
+
+    /* fixed bottom nav on mobile */
+    .nav{
+      position: fixed;
+      bottom: 0; left:0; right:0;
+      height: 64px;
+      padding: 0 12px;
+      backdrop-filter: blur(10px);
+      background: rgba(237,236,232,.95);
+    }
+    .nav .brand-mini{ display:none; }
+    .nav-right{ display:none; }
+    .nav-links{ width:100%; justify-content: space-around; gap:0;}
+    .nav-btn{ font-size:13px; padding: 10px 8px; }
+
+    .portrait{ width: 220px; }
+
+    .panel--about{ display:flex; flex-direction:column; }
+  }
+
+  @media (max-width: 480px){
+    :root{ --pad: 18px; }
+    .proj h3{ font-size: 22px; }
+  }
+
+  /* fullscreen mode for About/Contact */
+  .shell.is-full .work{ display:none; }
+  .shell.is-full{
+    grid-template-columns: 1fr !important;
+    grid-template-areas: "rail" "nav" !important;
+  }
+
+  /* home mode — no rail, work takes full width */
+  .shell.is-home .rail{ display:none; }
+  .shell.is-home{
+    grid-template-columns: 1fr !important;
+    grid-template-areas: "work" "nav" !important;
+  }
+  .shell.is-full .rail{
+    padding: clamp(32px, 5vw, 72px) clamp(32px, 6vw, 96px);
+  }
+  .shell.is-full .wordmark{
+    font-size: clamp(28px, 2.6vw, 40px);
+  }
+  .shell.is-full .brand{
+    margin-bottom: 40px;
+  }
+  .shell.is-full .wordmark-sub{
+    font-size: 12px;
+    margin-top: 10px;
+  }
+  .shell.is-full .panel--about.is-active{
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 5vw, 80px);
+    align-items: center;
+    max-width: 1100px;
+  }
+  .shell.is-full .panel--about h2{
+    font-size: clamp(32px, 3vw, 48px);
+  }
+  .shell.is-full .panel--about p{
+    font-size: 16px;
+    max-width: 50ch;
+  }
+  .shell.is-full .panel--about .portrait{
+    width: 100%;
+    max-width: 440px;
+    justify-self: end;
+  }
+  .shell.is-full .panel--contact{
+    max-width: 640px;
+  }
+  .shell.is-full .panel--contact h2{
+    font-size: clamp(32px, 3vw, 48px);
+    margin-bottom: 48px;
+  }
+  .shell.is-full .panel--contact .contact-row .v{
+    font-size: clamp(22px, 2vw, 28px);
+  }
+  @media (max-width: 860px){
+    .shell.is-full .panel--about.is-active{
+      grid-template-columns: 1fr;
+    }
+    .shell.is-full .panel--about .portrait{ justify-self:start; }
+  }
+
+  /* ----------  HOME HERO (no rail)  ---------- */
+  .hero-logo-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(24px, 4vw, 56px) 0 clamp(12px, 2vw, 24px);
+  }
+  .hero-logo-header img {
+    width: clamp(80px, 10vw, 140px);
+    height: auto;
+    display: block;
+  }
+
+  .hero-desc {
+    font-weight: 300;
+    font-size: clamp(22px, 2.8vw, 42px);
+    line-height: 1.2;
+    letter-spacing: -0.018em;
+    color: var(--ink);
+    text-align: center;
+    margin: 0 auto;
+    max-width: 32ch;
+  }
+  .hero-desc em {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--teal);
+  }
+
+  .hero-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    background: var(--teal);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 999px;
+    transition: transform .2s ease, background .2s ease, color .2s ease;
+  }
+  .hero-cta:hover { transform: translateY(-1px); background: var(--coral); color: var(--white); }
+  .hero-cta svg { transition: transform .2s ease; }
+  .hero-cta:hover svg { transform: translateX(3px); }
+  .hero-cta--ghost {
+    background: transparent;
+    color: var(--ink-2);
+    border: 1px solid rgba(0,0,0,.2);
+  }
+  .hero-cta--ghost:hover { background: var(--ink); color: var(--white); border-color: var(--ink); }
+
+  /* 10-box selected works grid on home */
+  .home-works-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: clamp(10px, 1.2vw, 18px);
+    margin-top: clamp(8px, 1.5vw, 16px);
+    width: 100%;
+  }
+  .home-work-box {
+    aspect-ratio: 3 / 4;
+    background: var(--paper-2);
+    border: 1px solid rgba(0,0,0,.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: clamp(12px, 1.4vw, 20px);
+    gap: 6px;
+    cursor: pointer;
+    transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .home-work-box::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(45deg, rgba(0,0,0,.03) 0 6px, rgba(0,0,0,.01) 6px 12px);
+  }
+  .home-work-box:hover {
+    background: var(--teal);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px -12px rgba(0,0,0,.28);
+  }
+  .home-work-box:hover .n,
+  .home-work-box:hover .t { color: rgba(255,255,255,.9); }
+  .home-work-box .n {
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    position: relative;
+    transition: color .2s;
+  }
+  .home-work-box .t {
+    font-size: clamp(12px, 1vw, 14px);
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.2;
+    position: relative;
+    transition: color .2s;
+  }
+  @media (max-width: 860px) {
+    .home-works-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-desc { font-size: 22px; }
+  }
+  @media (max-width: 480px) {
+    .home-works-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  }
+
+  /* hide hero + section header when in portfolio view */
+  .shell.is-portfolio #hero,
+  .shell.is-portfolio .section-head { display: none !important; }
+
+  /* tweaks panel */
+  .tweaks{
+    position: fixed; right: 16px; bottom: calc(var(--nav-h) + 16px);
+    background: var(--white);
+    border:1px solid rgba(0,0,0,.1);
+    padding: 14px 16px;
+    font-size: 12px;
+    z-index: 50;
+    display:none;
+    min-width: 220px;
+    box-shadow: 0 12px 40px rgba(0,0,0,.08);
+  }
+  .tweaks.is-open{ display:block; }
+  .tweaks h4{ margin:0 0 10px; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:600;}
+  .tweaks .row{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin:8px 0; }
+  .tweaks label{ color:var(--ink-2); }
+  .tweaks .swatches{ display:flex; gap:6px; }
+  .sw{ width:20px; height:20px; border-radius:999px; border:2px solid transparent; cursor:pointer; }
+  .sw.is-active{ border-color: var(--ink); }
+  @media (max-width:860px){
+    .tweaks{ bottom: calc(64px + 16px); right: 12px; left: 12px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="shell is-home">
+
+  <!-- LEFT RAIL (still) -->
+  <aside class="rail" id="rail">
+    <div class="brand">
+      <h1 class="wordmark">XAVIER PEREZ</h1>
+      <div class="wordmark-sub">Graphic Designer</div>
+    </div>
+
+    <div class="rail-body">
+
+      <!-- HOME -->
+      <section class="panel panel--home is-active" data-panel="home">
+        <h1>Designer building calm, human-centered systems.</h1>
+        <p>Brand, typography and interface work — rooted in patient problem-solving and playful exploration. Currently open to new collaborations.</p>
+        <div class="tagstrip">
+          <span class="tag">Brand</span>
+          <span class="tag">UX</span>
+          <span class="tag">Type</span>
+          <span class="tag">Motion</span>
+        </div>
+      </section>
+
+      <!-- PORTFOLIO -->
+      <section class="panel panel--portfolio" data-panel="portfolio">
+        <div class="label">Portfolio</div>
+        <ol class="proj-list" id="projList">
+          <!-- filled by JS -->
+        </ol>
+      </section>
+
+      <!-- ABOUT -->
+      <section class="panel panel--about" data-panel="about">
+        <div>
+          <h2>Me</h2>
+          <p>I loved design before I ever had the words for it. Before I understood layouts, typography, or branding, I was already paying attention to why certain things looked so good to me. It could be a goofy T-shirt with corny type, a pop-art graphic, an NBA logo, high-end clothing, or an album cover that carried a whole feeling before you even heard the music. I was drawn to things that felt emotional, intentional, and visually strong. Back then, I would not have called it design, but I just knew I liked art and anything that could make people feel something. That interest stayed with me long before I ever seriously studied graphic design.</p>
+        </div>
+        <div class="portrait" aria-hidden="true">PORTRAIT / 3:4</div>
+      </section>
+
+      <!-- CONTACT -->
+      <section class="panel panel--contact" data-panel="contact">
+        <h2>Let's talk.</h2>
+        <div class="contact-row">
+          <div class="k">email</div>
+          <div class="v"><a href="mailto:zaysossaa@gmail.com">zaysossaa@gmail.com</a></div>
+        </div>
+        <div class="contact-row">
+          <div class="k">phone</div>
+          <div class="v"><a href="tel:+17027691089">702-769-1089</a></div>
+        </div>
+        <div class="contact-row">
+          <div class="k">location</div>
+          <div class="v">Las Vegas, NV</div>
+        </div>
+      </section>
+
+    </div>
+  </aside>
+
+  <!-- RIGHT SIDE, scrollable -->
+  <main class="work" id="work" aria-label="Selected Work">
+    <div class="work-inner">
+
+      <!-- HERO / LANDING -->
+      <section class="hero" id="hero" aria-label="Introduction">
+
+        <!-- Logo header -->
+        <div class="hero-logo-header">
+          <img src="assets/xp-logo-white.svg" alt="Xavier Perez" />
+        </div>
+
+        <!-- Standalone description row -->
+        <p class="hero-desc">
+          X is a visual thinker exploring <em>identity</em>, <em>layout</em>, and <em>typography</em> through intentional design systems.
+        </p>
+
+        <!-- CTA row -->
+        <div class="hero-cta-row" style="margin-top:0;">
+          <a class="hero-cta" href="#work-start" data-go-portfolio>
+            <span>[&nbsp;Portfolio&nbsp;]</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="hero-cta hero-cta--ghost" href="#" data-go="contact">Get in touch</a>
+        </div>
+
+        <!-- Selected Works grid -->
+        <div class="home-works-grid">
+          <div class="home-work-box" data-go="portfolio" data-proj="p1"><img src="assets/pages/roots-01.jpg" alt="Roots" loading="lazy"><span class="n">01</span><span class="t">Roots</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p2"><img src="assets/pages/fluor-01.jpg" alt="Fluor Branding" loading="lazy"><span class="n">02</span><span class="t">Fluor Branding</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p3"><img src="assets/pages/vetements-01.jpg" alt="Vetements Web Design" loading="lazy"><span class="n">03</span><span class="t">Vetements Web Design</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p4"><img src="assets/pages/typo-specimen-01.jpg" alt="Handmade Typography Specimen" loading="lazy"><span class="n">04</span><span class="t">Handmade Typography Specimen</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p5"><img src="assets/pages/typo-anim-01.jpg" alt="Typography Animation" loading="lazy"><span class="n">05</span><span class="t">Typography Animation</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p6"><img src="assets/pages/riso-01.jpg" alt="Risograph Publication" loading="lazy"><span class="n">06</span><span class="t">Risograph Publication</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p7"><img src="assets/pages/branding-01.jpg" alt="Branding" loading="lazy"><span class="n">07</span><span class="t">Branding</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p8"><img src="assets/pages/sona-01.jpg" alt="Sona Desktop App" loading="lazy"><span class="n">08</span><span class="t">Sona Desktop App</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p9"><img src="assets/pages/package-01.jpg" alt="Package Design" loading="lazy"><span class="n">09</span><span class="t">Package Design</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p10"><img src="assets/pages/vinyl-01.jpg" alt="Vinyl Cover" loading="lazy"><span class="n">10</span><span class="t">Vinyl Cover</span></div>
+        </div>
+
+      </section>
+
+      <div id="work-start"></div>
+
+      <div class="section-head">
+        <h2 class="t">Selected Work</h2>
+        <div class="c"><span id="workCount">01</span> / 10</div>
+      </div>
+
+      <!-- PROJECTS -->
+      <article class="proj proj--filled" id="p1" data-title="Roots" data-num="01">
+        <div class="proj-label"><span class="proj-num">01</span></div>
+        <div class="proj-pages">
+          <img src="assets/pages/roots-01.jpg" alt="Roots — page 1" loading="lazy">
+          <img src="assets/pages/roots-02.jpg" alt="Roots — page 2" loading="lazy">
+          <img src="assets/pages/roots-03.jpg" alt="Roots — page 3" loading="lazy">
+          <img src="assets/pages/roots-04.jpg" alt="Roots — page 4" loading="lazy">
+        </div>
+      </article>
+
+      <article class="proj proj--filled" id="p2" data-title="Fluor Branding" data-num="02">
+        <div class="proj-label"><span class="proj-num">02</span></div>
+        <div class="proj-pages">
+          <img src="assets/pages/fluor-01.jpg" alt="Fluor Branding — page 1" loading="lazy">
+          <img src="assets/pages/fluor-02.jpg" alt="Fluor Branding — page 2" loading="lazy">
+          <img src="assets/pages/fluor-03.jpg" alt="Fluor Branding — page 3" loading="lazy">
+        </div>
+      </article>
+
+      <article class="proj proj--filled" id="p3" data-title="Vetements Web Design" data-num="03">
+        <div class="proj-label"><span class="proj-num">03</span></div>
+        <div class="proj-pages">
+          <img src="assets/pages/vetements-01.jpg" alt="Vetements Web Design — page 1" loading="lazy">
+        </div>
+      </article>
+
+      <article class="proj proj--filled" id="p4" data-title="Handmade Typography Specimen" data-num="04">
+        <div class="proj-label"><span class="proj-num">04</span></div>
+        <div class="proj-pages">
+          <img src="assets/pages/typo-specimen-01.jpg" alt="Handmade Typography Specimen — page 1" loading="lazy">
+          <img src="assets/pages/typo-specimen-02.jpg" alt="Handmade Typography Specimen — page 2" loading="lazy">
+        </div>
+      </article>
+
+      <article class="proj proj--filled" id="p5" data-title="Typography Animation" data-num="05">
+        <div class="proj-label"><span class="proj-num">05</span></div>
+        <div class="proj-pages">
+          <img src="assets/pages/typo-anim-01.jpg" alt="Typography Animation — page 1" loading="lazy">
+        </div>
+      </article>
+
+      <article class="proj proj--filled" id="p6" data-title="Risograph Publication" data-num="06">
+        <div class="proj-label"><span class="proj-num">06</span></div>
+        <div class="proj-pages">
+          <img src="assets/pages/riso-01.jpg" alt="Risograph Publication — page 1" loading="lazy">
+          <img src="assets/pages/riso-02.jpg" alt="Risograph Publication — page 2" loading="lazy">
+        </div>
+      </article>
+
+      <article class="proj proj--filled" id="p7" data-title="Branding" data-num="07">
+        <div class="proj-label"><span class="proj-num">07</span></div>
+        <div class="proj-pages">
+          <img src="assets/pages/branding-01.jpg" alt="Branding — page 1" loading="lazy">
+          <img src="assets/pages/branding-02.jpg" alt="Branding — page 2" loading="lazy">
+        </div>
+      </article>
+
+      <article class="proj proj--filled" id="p8" data-title="Sona Desktop App" data-num="08">
+        <div class="proj-label"><span class="proj-num">08</span></div>
+        <div class="proj-pages">
+          <img src="assets/pages/sona-01.jpg" alt="Sona Desktop App — page 1" loading="lazy">
+          <img src="assets/pages/sona-02.jpg" alt="Sona Desktop App — page 2" loading="lazy">
+        </div>
+      </article>
+
+      <article class="proj proj--filled" id="p9" data-title="Package Design" data-num="09">
+        <div class="proj-label"><span class="proj-num">09</span></div>
+        <div class="proj-pages">
+          <img src="assets/pages/package-01.jpg" alt="Package Design — page 1" loading="lazy">
+        </div>
+      </article>
+
+      <article class="proj proj--filled" id="p10" data-title="Vinyl Cover" data-num="10">
+        <div class="proj-label"><span class="proj-num">10</span></div>
+        <div class="proj-pages">
+          <img src="assets/pages/vinyl-01.jpg" alt="Vinyl Cover — page 1" loading="lazy">
+        </div>
+      </article>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--muted); letter-spacing:.12em; text-transform:uppercase; padding-top: 8px; border-top:1px solid rgba(0,0,0,.08);">
+        <span>End of Selected Work</span>
+        <span>© 2026 Xavier Perez</span>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="nav" aria-label="Primary">
+    <div class="brand-mini"><span>2026</span></div>
+    <div class="nav-links">
+      <button class="nav-btn" data-go="home"     aria-current="page">Home</button>
+      <button class="nav-btn" data-go="portfolio">Portfolio</button>
+      <button class="nav-btn" data-go="about">About</button>
+      <button class="nav-btn" data-go="contact">Contact</button>
+    </div>
+    <div class="nav-right" id="navRight">
+      <span id="clock">—</span>
+      <span>LAS VEGAS</span>
+    </div>
+  </nav>
+</div>
+
+<!-- Tweaks -->
+<div class="tweaks" id="tweaks" role="dialog" aria-label="Tweaks">
+  <h4>Tweaks</h4>
+  <div class="row">
+    <label>Rail color</label>
+    <div class="swatches" id="swPanel">
+      <button class="sw is-active" data-col="#2F5E5E" style="background:#2F5E5E"></button>
+      <button class="sw" data-col="#1D3B3B" style="background:#1D3B3B"></button>
+      <button class="sw" data-col="#3D4F3A" style="background:#3D4F3A"></button>
+      <button class="sw" data-col="#2D3142" style="background:#2D3142"></button>
+      <button class="sw" data-col="#8B3A2E" style="background:#8B3A2E"></button>
+    </div>
+  </div>
+  <div class="row">
+    <label>Accent</label>
+    <div class="swatches" id="swAccent">
+      <button class="sw is-active" data-col="#E86A4F" style="background:#E86A4F"></button>
+      <button class="sw" data-col="#D4A24B" style="background:#D4A24B"></button>
+      <button class="sw" data-col="#6C8BD5" style="background:#6C8BD5"></button>
+      <button class="sw" data-col="#7A9E7E" style="background:#7A9E7E"></button>
+    </div>
+  </div>
+  <div class="row">
+    <label>Rail side</label>
+    <div class="swatches">
+      <button class="sw" id="sideLeft"  style="background:#fff; border:1px solid #ccc; color:#333; width:auto; padding:2px 8px; border-radius:2px; font-size:11px;">Left</button>
+      <button class="sw" id="sideRight" style="background:#fff; border:1px solid #ccc; color:#333; width:auto; padding:2px 8px; border-radius:2px; font-size:11px;">Right</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* EDITMODE defaults */
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "panelColor": "#1D3B3B",
+    "accent": "#E86A4F",
+    "side": "left"
+  }/*EDITMODE-END*/;
+
+  const state = { ...TWEAK_DEFAULTS };
+
+  /* apply state to DOM */
+  function applyState(){
+    document.documentElement.style.setProperty('--teal', state.panelColor);
+    document.documentElement.style.setProperty('--coral', state.accent);
+    // side — only apply if not in home/full mode
+    const shell = document.querySelector('.shell');
+    if (!shell.classList.contains('is-home') && !shell.classList.contains('is-full')){
+      if (state.side === 'right'){
+        shell.style.gridTemplateAreas = '"work rail" "nav nav"';
+        shell.style.gridTemplateColumns = '1fr var(--rail-w)';
+      } else {
+        shell.style.gridTemplateAreas = '"rail work" "nav nav"';
+        shell.style.gridTemplateColumns = 'var(--rail-w) 1fr';
+      }
+    }
+  }
+  applyState();
+
+  /* ---------- nav / panel switching ---------- */
+  const panels = document.querySelectorAll('.panel');
+  const navBtns = document.querySelectorAll('.nav-btn');
+
+  function showPanel(name){
+    panels.forEach(p => p.classList.toggle('is-active', p.dataset.panel === name));
+    navBtns.forEach(b => {
+      if (b.dataset.go === name) b.setAttribute('aria-current','page');
+      else b.removeAttribute('aria-current');
+    });
+    const shell = document.querySelector('.shell');
+    const full = (name === 'about' || name === 'contact');
+    const home = (name === 'home');
+    shell.classList.toggle('is-full', full);
+    shell.classList.toggle('is-home', home);
+    shell.classList.toggle('is-portfolio', name === 'portfolio');
+    // clear inline grid overrides so CSS classes take over, then reapply for portfolio
+    if (home || full){
+      shell.style.gridTemplateAreas = '';
+      shell.style.gridTemplateColumns = '';
+    } else {
+      applyState();
+    }
+
+    /* scroll the right-side work pane to hero on Home, to portfolio on Portfolio */
+    const work = document.getElementById('work');
+    if (!full && work){
+      if (name === 'portfolio'){
+        const start = document.getElementById('work-start');
+        if (start){
+          if (window.matchMedia('(max-width: 860px)').matches){
+            start.scrollIntoView({ behavior:'smooth', block:'start' });
+          } else {
+            work.scrollTo({ top: start.offsetTop - 24, behavior:'smooth' });
+          }
+        }
+      } else if (name === 'home'){
+        work.scrollTo({ top: 0, behavior:'smooth' });
+      }
+    }
+  }
+  navBtns.forEach(b => b.addEventListener('click', () => showPanel(b.dataset.go)));
+
+  /* ---------- home work boxes → portfolio ---------- */
+  document.querySelectorAll('.home-work-box').forEach((box, i) => {
+    box.addEventListener('click', () => {
+      showPanel('portfolio');
+      // after panel switches, scroll to the matching project
+      requestAnimationFrame(() => {
+        const el = document.getElementById('p' + (i + 1));
+        const work = document.getElementById('work');
+        if (!el || !work) return;
+        if (window.matchMedia('(max-width: 860px)').matches){
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          work.scrollTo({ top: el.offsetTop - 24, behavior: 'smooth' });
+        }
+      });
+    });
+  });
+
+  /* Hero CTA → portfolio */
+  document.querySelectorAll('[data-go-portfolio]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      showPanel('portfolio');
+    });
+  });
+  /* Hero ghost CTA → contact */
+  document.querySelectorAll('.hero-cta-row [data-go="contact"]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      showPanel('contact');
+    });
+  });
+
+  /* ---------- portfolio list in rail ---------- */
+  const PROJECTS = [
+    ['01','Roots'],
+    ['02','Fluor Branding'],
+    ['03','Vetements Web Design'],
+    ['04','Handmade Typography Specimen'],
+    ['05','Typography Animation'],
+    ['06','Risograph Publication'],
+    ['07','Branding'],
+    ['08','Sona Desktop App'],
+    ['09','Package Design'],
+    ['10','Vinyl Cover']
+  ];
+  const pl = document.getElementById('projList');
+  PROJECTS.forEach(([n, name], i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="n">${n}</span><span class="t">${name}</span>`;
+    li.dataset.target = 'p'+(i+1);
+    li.addEventListener('click', () => {
+      const el = document.getElementById(li.dataset.target);
+      if (!el) return;
+      const work = document.getElementById('work');
+      if (window.matchMedia('(max-width: 860px)').matches){
+        el.scrollIntoView({ behavior:'smooth', block:'start' });
+      } else {
+        const top = el.offsetTop - 24;
+        work.scrollTo({ top, behavior:'smooth' });
+      }
+    });
+    pl.appendChild(li);
+  });
+
+  /* track current project on scroll */
+  const work = document.getElementById('work');
+  const projEls = [...document.querySelectorAll('.proj')];
+  const listItems = [...pl.children];
+  const workCount = document.getElementById('workCount');
+
+  function updateCurrent(){
+    const scroller = window.matchMedia('(max-width: 860px)').matches ? window : work;
+    const scrollTop = scroller === window ? window.scrollY : work.scrollTop;
+    const viewport  = scroller === window ? window.innerHeight : work.clientHeight;
+    let currentIdx = 0;
+    const probe = scrollTop + viewport * 0.3;
+    projEls.forEach((el, i) => {
+      const top = scroller === window ? el.getBoundingClientRect().top + window.scrollY : el.offsetTop;
+      if (top <= probe) currentIdx = i;
+    });
+    listItems.forEach((li, i) => li.classList.toggle('is-current', i === currentIdx));
+    workCount.textContent = String(currentIdx + 1).padStart(2,'0');
+    try{ localStorage.setItem('xp:proj', currentIdx); }catch(e){}
+  }
+  work.addEventListener('scroll', updateCurrent, { passive:true });
+  window.addEventListener('scroll', updateCurrent, { passive:true });
+  window.addEventListener('resize', updateCurrent);
+  updateCurrent();
+
+  /* restore scroll */
+  try{
+    const savedIdx = parseInt(localStorage.getItem('xp:proj') || '0', 10);
+    if (savedIdx > 0){
+      const el = projEls[savedIdx];
+      if (el){
+        if (window.matchMedia('(max-width: 860px)').matches){
+          setTimeout(() => el.scrollIntoView({ block:'start' }), 50);
+        } else {
+          setTimeout(() => work.scrollTo({ top: el.offsetTop - 24 }), 50);
+        }
+      }
+    }
+  }catch(e){}
+
+  /* ---------- clock in nav ---------- */
+  function tick(){
+    const d = new Date();
+    const h = String(d.getHours()).padStart(2,'0');
+    const m = String(d.getMinutes()).padStart(2,'0');
+    document.getElementById('clock').textContent = `${h}:${m} PST`;
+  }
+  tick(); setInterval(tick, 30000);
+
+  /* ---------- Tweaks protocol ---------- */
+  const tweaksEl = document.getElementById('tweaks');
+
+  window.addEventListener('message', (e) => {
+    const d = e.data || {};
+    if (d.type === '__activate_edit_mode')   tweaksEl.classList.add('is-open');
+    if (d.type === '__deactivate_edit_mode') tweaksEl.classList.remove('is-open');
+  });
+  try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch(e){}
+
+  function persist(edits){
+    Object.assign(state, edits);
+    applyState();
+    try{ window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*'); }catch(e){}
+  }
+
+  document.getElementById('swPanel').addEventListener('click', (e)=>{
+    const b = e.target.closest('.sw'); if (!b) return;
+    [...e.currentTarget.children].forEach(x => x.classList.toggle('is-active', x===b));
+    persist({ panelColor: b.dataset.col });
+  });
+  document.getElementById('swAccent').addEventListener('click', (e)=>{
+    const b = e.target.closest('.sw'); if (!b) return;
+    [...e.currentTarget.children].forEach(x => x.classList.toggle('is-active', x===b));
+    persist({ accent: b.dataset.col });
+  });
+  document.getElementById('sideLeft').addEventListener('click', ()=>persist({ side:'left' }));
+  document.getElementById('sideRight').addEventListener('click', ()=>persist({ side:'right' }));
+</script>
+
+</body>
+</html>
