@@ -1047,6 +1047,11 @@
   .shell.is-portfolio #hero,
   .shell.is-portfolio .section-head { display: none !important; }
 
+  /* home page — thumbnails only, no scrolling into project work */
+  .shell.is-home .proj { display: none !important; }
+  .shell.is-home .section-head { display: none !important; }
+  .shell.is-home .work-inner { padding-bottom: clamp(20px, 2.4vw, 32px); }
+
   /* tweaks panel */
   .tweaks{
     position: fixed; right: 16px; bottom: calc(var(--nav-h) + 16px);
