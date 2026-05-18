@@ -205,28 +205,28 @@
     font-size:14px; line-height:1.7;
     color: rgba(255,255,255,.8);
     margin:0 0 14px 0;
-    max-width: 48ch;
+    max-width: 100%;
+    padding-right: clamp(12px, 2vw, 24px);
   }
   .portrait{
     width: min(320px, 70%);
     aspect-ratio: 3/4;
-    background:
-      repeating-linear-gradient(45deg, rgba(255,255,255,.06) 0 8px, rgba(255,255,255,.02) 8px 16px),
-      #1f4545;
+    overflow: hidden;
     border:1px solid rgba(255,255,255,.12);
-    display:flex; align-items:flex-end; justify-content:flex-start;
-    padding:10px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 10px;
-    letter-spacing:.08em;
-    color: rgba(255,255,255,.45);
-    text-transform:uppercase;
+    margin: 0 auto;
+  }
+  .portrait img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
   }
 
   /* CONTACT panel */
   .panel--contact{ }
   .panel--contact h2{
-    font-weight:300;
+    font-weight:400;
     font-size: clamp(22px, 2vw, 30px);
     margin:0 0 30px 0;
     color:var(--white);
@@ -235,10 +235,12 @@
     margin-bottom: 26px;
   }
   .contact-row .k{
-    font-size:12px;
+    font-size:11px;
     color: rgba(255,255,255,.55);
-    letter-spacing:.02em;
-    margin-bottom:4px;
+    letter-spacing:.22em;
+    font-weight:500;
+    text-transform:uppercase;
+    margin-bottom:6px;
   }
   .contact-row .v{
     font-size: clamp(18px, 1.6vw, 22px);
@@ -760,13 +762,13 @@
   .nav .brand-mini{
     display:flex; align-items:center; gap:10px;
     font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+    flex: 1;
   }
   .nav .brand-mini .dot{
     width:8px; height:8px; background:var(--coral); border-radius:999px;
   }
   .nav-links{
     display:flex; align-items:center; gap: clamp(8px, 1.5vw, 24px);
-    margin-left: 24px;
   }
   .nav-btn{
     appearance:none; background:none; border:0;
@@ -789,6 +791,7 @@
     display:flex; align-items:center; gap: 14px;
     font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
     font-variant-numeric: tabular-nums;
+    flex: 1; justify-content: flex-end;
   }
 
   /* ----------  MOBILE  ---------- */
@@ -874,21 +877,27 @@
   }
   .shell.is-full .panel--about.is-active{
     grid-template-columns: 1fr 1fr;
-    gap: clamp(32px, 5vw, 80px);
+    gap: clamp(60px, 9vw, 160px);
     align-items: center;
     max-width: 1100px;
   }
   .shell.is-full .panel--about h2{
     font-size: clamp(32px, 3vw, 48px);
   }
+  .shell.is-full .panel--about > div:first-child{
+    transform: translateY(-40px);
+  }
   .shell.is-full .panel--about p{
     font-size: 16px;
-    max-width: 50ch;
+    max-width: 56ch;
   }
   .shell.is-full .panel--about .portrait{
     width: 100%;
-    max-width: 440px;
+    max-width: 420px;
     justify-self: end;
+    margin-left: 210px;
+    margin-right: clamp(24px, 3vw, 48px);
+    transform: translateY(-10px);
   }
   .shell.is-full .panel--contact{
     max-width: 640px;
@@ -904,7 +913,12 @@
     .shell.is-full .panel--about.is-active{
       grid-template-columns: 1fr;
     }
-    .shell.is-full .panel--about .portrait{ justify-self:start; }
+    .shell.is-full .panel--about > div:first-child{ transform: none; }
+    .shell.is-full .panel--about .portrait{
+      justify-self: center;
+      margin: 0 auto;
+      transform: none;
+    }
   }
 
   /* ----------  HOME HERO (no rail)  ---------- */
@@ -998,6 +1012,7 @@
   }
   .home-work-box:hover {
     background: var(--teal);
+    border-color: var(--teal-soft);
     transform: translateY(-3px);
     box-shadow: 0 14px 32px -12px rgba(0,0,0,.28);
   }
@@ -1095,22 +1110,24 @@
           <h2>Me</h2>
           <p>I loved design before I ever had the words for it. Before I understood layouts, typography, or branding, I was already paying attention to why certain things looked so good to me. It could be a goofy T-shirt with corny type, a pop-art graphic, an NBA logo, high-end clothing, or an album cover that carried a whole feeling before you even heard the music. I was drawn to things that felt emotional, intentional, and visually strong. Back then, I would not have called it design, but I just knew I liked art and anything that could make people feel something. That interest stayed with me long before I ever seriously studied graphic design.</p>
         </div>
-        <div class="portrait" aria-hidden="true">PORTRAIT / 3:4</div>
+        <div class="portrait">
+          <img src="portrait.jpg" alt="Xavier Perez" />
+        </div>
       </section>
 
       <!-- CONTACT -->
       <section class="panel panel--contact" data-panel="contact">
-        <h2>Let's talk.</h2>
+        <h2>Reach me.</h2>
         <div class="contact-row">
-          <div class="k">email</div>
-          <div class="v"><a href="mailto:zaysossaa@gmail.com">zaysossaa@gmail.com</a></div>
+          <div class="k">EMAIL</div>
+          <div class="v"><a href="mailto:zaysossaa@gmail.com">Zaysossaa@gmail.com</a></div>
         </div>
         <div class="contact-row">
-          <div class="k">phone</div>
+          <div class="k">PHONE</div>
           <div class="v"><a href="tel:+17027691089">702-769-1089</a></div>
         </div>
         <div class="contact-row">
-          <div class="k">location</div>
+          <div class="k">LOCATION</div>
           <div class="v">Las Vegas, NV</div>
         </div>
       </section>
@@ -1168,8 +1185,8 @@
       </div>
 
       <!-- PROJECTS -->
-      <article class="proj proj--filled" id="p1" data-title="Roots" data-num="01">
-        <div class="proj-label"><span class="proj-num">01</span></div>
+      <article class="proj proj--filled" id="p1" data-title="Roots Non-Profit Organization" data-num="01">
+        <div class="proj-label"><span class="proj-num">Roots Non-Profit Organization</span></div>
         <div class="proj-pages">
           <img src="roots-01.jpg" alt="Roots — page 1" loading="lazy">
           <img src="roots-02.jpg" alt="Roots — page 2" loading="lazy">
@@ -1179,7 +1196,7 @@
       </article>
 
       <article class="proj proj--filled" id="p2" data-title="Fluor Branding" data-num="02">
-        <div class="proj-label"><span class="proj-num">02</span></div>
+        <div class="proj-label"><span class="proj-num">Fluor Branding</span></div>
         <div class="proj-pages">
           <img src="fluor-01.jpg" alt="Fluor Branding — page 1" loading="lazy">
           <img src="fluor-02.jpg" alt="Fluor Branding — page 2" loading="lazy">
@@ -1188,14 +1205,14 @@
       </article>
 
       <article class="proj proj--filled" id="p3" data-title="Vetements Web Design" data-num="03">
-        <div class="proj-label"><span class="proj-num">03</span></div>
+        <div class="proj-label"><span class="proj-num">Vetements Web Design</span></div>
         <div class="proj-pages">
           <img src="vetements-01.jpg" alt="Vetements Web Design — page 1" loading="lazy">
         </div>
       </article>
 
       <article class="proj proj--filled" id="p4" data-title="Handmade Typography Specimen" data-num="04">
-        <div class="proj-label"><span class="proj-num">04</span></div>
+        <div class="proj-label"><span class="proj-num">Handmade Typography Specimen</span></div>
         <div class="proj-pages">
           <img src="typo-specimen-01.jpg" alt="Handmade Typography Specimen — page 1" loading="lazy">
           <img src="typo-specimen-02.jpg" alt="Handmade Typography Specimen — page 2" loading="lazy">
@@ -1203,14 +1220,14 @@
       </article>
 
       <article class="proj proj--filled" id="p5" data-title="Typography Animation" data-num="05">
-        <div class="proj-label"><span class="proj-num">05</span></div>
+        <div class="proj-label"><span class="proj-num">Typography Animation</span></div>
         <div class="proj-pages">
           <img src="typo-anim-01.jpg" alt="Typography Animation — page 1" loading="lazy">
         </div>
       </article>
 
       <article class="proj proj--filled" id="p6" data-title="Risograph Publication" data-num="06">
-        <div class="proj-label"><span class="proj-num">06</span></div>
+        <div class="proj-label"><span class="proj-num">Risograph Publication</span></div>
         <div class="proj-pages">
           <img src="riso-01.jpg" alt="Risograph Publication — page 1" loading="lazy">
           <img src="riso-02.jpg" alt="Risograph Publication — page 2" loading="lazy">
@@ -1218,7 +1235,7 @@
       </article>
 
       <article class="proj proj--filled" id="p7" data-title="Branding" data-num="07">
-        <div class="proj-label"><span class="proj-num">07</span></div>
+        <div class="proj-label"><span class="proj-num">Branding</span></div>
         <div class="proj-pages">
           <img src="branding-01.jpg" alt="Branding — page 1" loading="lazy">
           <img src="branding-02.jpg" alt="Branding — page 2" loading="lazy">
@@ -1226,7 +1243,7 @@
       </article>
 
       <article class="proj proj--filled" id="p8" data-title="Sona Desktop App" data-num="08">
-        <div class="proj-label"><span class="proj-num">08</span></div>
+        <div class="proj-label"><span class="proj-num">Sona Desktop App</span></div>
         <div class="proj-pages">
           <img src="sona-01.jpg" alt="Sona Desktop App — page 1" loading="lazy">
           <img src="sona-02.jpg" alt="Sona Desktop App — page 2" loading="lazy">
@@ -1234,14 +1251,14 @@
       </article>
 
       <article class="proj proj--filled" id="p9" data-title="Package Design" data-num="09">
-        <div class="proj-label"><span class="proj-num">09</span></div>
+        <div class="proj-label"><span class="proj-num">Package Design</span></div>
         <div class="proj-pages">
           <img src="package-01.jpg" alt="Package Design — page 1" loading="lazy">
         </div>
       </article>
 
       <article class="proj proj--filled" id="p10" data-title="Vinyl Cover" data-num="10">
-        <div class="proj-label"><span class="proj-num">10</span></div>
+        <div class="proj-label"><span class="proj-num">Vinyl Cover</span></div>
         <div class="proj-pages">
           <img src="vinyl-01.jpg" alt="Vinyl Cover — page 1" loading="lazy">
         </div>
