@@ -603,7 +603,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,.55) 0%, rgba(0,0,0,.1) 50%, transparent 100%);
+    background: linear-gradient(to top, rgba(0,0,0,.275) 0%, rgba(0,0,0,.05) 50%, transparent 100%);
     z-index: 0;
     transition: opacity .2s;
   }
@@ -1039,10 +1039,16 @@
   .home-work-box .t {
     font-size: clamp(12px, 1vw, 14px);
     font-weight: 600;
-    color: var(--ink);
+    color: rgba(255,255,255,.95);
     line-height: 1.2;
     position: relative;
-    transition: color .2s;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .25s ease, transform .25s ease;
+  }
+  .home-work-box:hover .t {
+    opacity: 1;
+    transform: translateY(0);
   }
   @media (max-width: 860px) {
     .home-works-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1082,6 +1088,25 @@
   .sw.is-active{ border-color: var(--ink); }
   @media (max-width:860px){
     .tweaks{ bottom: calc(64px + 16px); right: 12px; left: 12px;}
+  }
+
+  /* ----------  PER-THUMBNAIL TITLE COLOR OVERRIDES  ---------- */
+  /* Riso, Fluor, Vetements, Package, Roots — black title on hover (light images) */
+  .home-work-box[data-proj="p1"]:hover .t,
+  .home-work-box[data-proj="p2"]:hover .t,
+  .home-work-box[data-proj="p3"]:hover .t,
+  .home-work-box[data-proj="p6"]:hover .t,
+  .home-work-box[data-proj="p9"]:hover .t {
+    color: #000 !important;
+  }
+
+  /* Handmade Typography — darker overlay so the title is more legible */
+  .home-work-box[data-proj="p4"]::after {
+    background: linear-gradient(to top, rgba(0,0,0,.55) 0%, rgba(0,0,0,.2) 50%, rgba(0,0,0,.05) 100%);
+  }
+  .home-work-box[data-proj="p4"]:hover::after {
+    opacity: 1;
+    background: linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.45) 55%, rgba(0,0,0,.1) 100%);
   }
 </style>
 </head>
@@ -1177,16 +1202,16 @@
 
         <!-- Selected Works grid -->
         <div class="home-works-grid">
-          <div class="home-work-box" data-go="portfolio" data-proj="p1"><img src="roots-01.jpg" alt="Roots" loading="lazy"><span class="n">01</span><span class="t">Roots</span></div>
-          <div class="home-work-box" data-go="portfolio" data-proj="p2"><img src="fluor-01.jpg" alt="Fluor Branding" loading="lazy"><span class="n">02</span><span class="t">Fluor Branding</span></div>
-          <div class="home-work-box" data-go="portfolio" data-proj="p3"><img src="vetements-01.jpg" alt="Vetements Web Design" loading="lazy"><span class="n">03</span><span class="t">Vetements Web Design</span></div>
-          <div class="home-work-box" data-go="portfolio" data-proj="p4"><img src="typo-specimen-01.jpg" alt="Handmade Typography Specimen" loading="lazy"><span class="n">04</span><span class="t">Handmade Typography Specimen</span></div>
-          <div class="home-work-box" data-go="portfolio" data-proj="p5"><img src="typo-anim-01.jpg" alt="Typography Animation" loading="lazy"><span class="n">05</span><span class="t">Typography Animation</span></div>
-          <div class="home-work-box" data-go="portfolio" data-proj="p6"><img src="riso-01.jpg" alt="Risograph Publication" loading="lazy"><span class="n">06</span><span class="t">Risograph Publication</span></div>
-          <div class="home-work-box" data-go="portfolio" data-proj="p7"><img src="branding-01.jpg" alt="Branding" loading="lazy"><span class="n">07</span><span class="t">Branding</span></div>
-          <div class="home-work-box" data-go="portfolio" data-proj="p8"><img src="sona-01.jpg" alt="Sona Desktop App" loading="lazy"><span class="n">08</span><span class="t">Sona Desktop App</span></div>
-          <div class="home-work-box" data-go="portfolio" data-proj="p9"><img src="package-01.jpg" alt="Package Design" loading="lazy"><span class="n">09</span><span class="t">Package Design</span></div>
-          <div class="home-work-box" data-go="portfolio" data-proj="p10"><img src="vinyl-01.jpg" alt="Vinyl Cover" loading="lazy"><span class="n">10</span><span class="t">Vinyl Cover</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p1"><img src="thumb-01.jpg" alt="Roots" loading="lazy"><span class="n">01</span><span class="t">Roots</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p2"><img src="thumb-02.jpg" alt="Fluor Branding" loading="lazy"><span class="n">02</span><span class="t">Fluor Branding</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p3"><img src="thumb-03.jpg" alt="Vetements Web Design" loading="lazy"><span class="n">03</span><span class="t">Vetements Web Design</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p4"><img src="thumb-04.jpg" alt="Handmade Typography Specimen" loading="lazy"><span class="n">04</span><span class="t">Handmade Typography Specimen</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p5"><img src="thumb-05.jpg" alt="Typography Animation" loading="lazy"><span class="n">05</span><span class="t">Typography Animation</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p6"><img src="thumb-06.jpg" alt="Risograph Publication" loading="lazy"><span class="n">06</span><span class="t">Risograph Publication</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p7"><img src="thumb-07.jpg" alt="Branding" loading="lazy"><span class="n">07</span><span class="t">Branding</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p8"><img src="thumb-08.jpg" alt="Sona Desktop App" loading="lazy"><span class="n">08</span><span class="t">Sona Desktop App</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p9"><img src="thumb-09.jpg" alt="Package Design" loading="lazy"><span class="n">09</span><span class="t">Package Design</span></div>
+          <div class="home-work-box" data-go="portfolio" data-proj="p10"><img src="thumb-10.jpg" alt="Vinyl Cover" loading="lazy"><span class="n">10</span><span class="t">Vinyl Cover</span></div>
         </div>
 
       </section>
@@ -1426,7 +1451,7 @@
           if (window.matchMedia('(max-width: 860px)').matches){
             el.scrollIntoView({ block: 'start' });
           } else {
-            const top = el.getBoundingClientRect().top - work.getBoundingClientRect().top + work.scrollTop - 24;
+            const top = el.offsetTop - 24;
             work.style.scrollBehavior = 'auto';
             work.scrollTop = top;
             work.style.scrollBehavior = '';
