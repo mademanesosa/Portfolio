@@ -1108,6 +1108,54 @@
     opacity: 1;
     background: linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.45) 55%, rgba(0,0,0,.1) 100%);
   }
+
+  /* ---- Project description toggle ---- */
+  .proj--filled .proj-label .desc-toggle{
+    font: inherit; font-size: 15px; font-weight: 300; color: var(--muted);
+    background: none; border: 0; padding: 0; margin: 0;
+    display: block; text-align: left;
+    cursor: pointer;
+  }
+  .proj--filled .proj-label{ display: flex !important; flex-direction: column !important; align-items: flex-start !important; gap: 4px; }
+  .proj--filled .proj-label .proj-num{ font-size: 18px; }
+  .proj--filled .proj-label .desc-toggle:hover{ color: var(--ink-2); }
+  .proj--filled .proj-label .desc-toggle[aria-expanded="true"]{ color: var(--teal); }
+  .proj--filled .desc-wrap{ position: relative; }
+  .proj--filled .desc-overlay{
+    position: absolute; inset: 0; z-index: 2;
+    display: flex; align-items: flex-start;
+    padding: clamp(20px, 3vw, 48px);
+    background: rgba(255,255,255,.94);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    overflow-y: auto;
+    opacity: 0; transform: translateY(12px); visibility: hidden;
+    transition: opacity .45s ease, transform .45s ease, visibility 0s linear .45s;
+  }
+  .proj--filled .desc-overlay.is-open{
+    opacity: 1; transform: none; visibility: visible;
+    transition: opacity .45s ease, transform .45s ease, visibility 0s;
+  }
+  .proj--filled .desc-overlay p{
+    margin: 0; max-width: calc(62ch - 40px); text-wrap: pretty; hyphens: manual;
+    font-size: clamp(15px, 1.25vw, 18px); line-height: 1.6; color: var(--ink);
+  }
+  @media (max-width: 700px){
+    .proj--filled .desc-wrap{ display: flex; flex-direction: column; }
+    .proj--filled .desc-overlay{
+      position: static; order: -1; overflow: hidden;
+      max-height: 0; padding: 0 20px; transform: translateY(-6px);
+      transition: max-height .45s ease, padding .45s ease, opacity .45s ease, transform .45s ease, visibility 0s linear .45s;
+    }
+    .proj--filled .desc-overlay.is-open{
+      max-height: 900px; padding: 20px; transform: none;
+      transition: max-height .45s ease, padding .45s ease, opacity .45s ease, transform .45s ease, visibility 0s;
+    }
+    .proj--filled .proj-pages--video.desc-wrap{ display: grid; }
+    .proj--filled .proj-pages--video .desc-overlay{ grid-column: 1 / -1; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .proj--filled .desc-overlay{ transition: none; transform: none; }
+  }
 </style>
 </head>
 <body>
@@ -1596,5 +1644,37 @@
   document.getElementById('sideRight').addEventListener('click', ()=>persist({ side:'right' }));
 </script>
 
+
+<script>
+(function(){
+  var D = {"p1": "Roots is a nonprofit I invented for my BFA thesis. It's a park identity for West Las Vegas that connects community care with local history. The parks spotlight neighborhood figures who shaped the city, like Dr. James B. McMillan, Nevada's first Black dentist, who helped end segregation on the Strip. That way kids can see what's possible for them, and everyone takes pride in their shared spaces through identity, not enforcement. The 3D pop-art type, neon accents and sporty energy turn the park into somewhere people actually want to be, and the wayfinding system guides visitors through every path and corner.", "p2": "Fluor is a Fortune 500 engineering and construction company, and this is my concept rebrand of it. The logo is built from one of the towers at Fluor's former Irvine, California headquarters, a 93-foot shaft topped with a faceted head, which I turned into a bold mark that feels as solid as what they build. From there I took the identity across everything a real company runs on: a website, Instagram ads, stationery, and even employment and scheduling forms.", "p3": "Vetements is a Paris fashion house known for deconstructed, reconstructed clothing, and this is my concept e-commerce site for the brand. I wanted shopping the site to feel like wearing the clothes, so I deconstructed the experience itself. Pieces are shown through trash bags and crumpled paper, and every product page sits on a paper-like texture. Small details throughout make it feel unmistakably Vetements.", "p4": "I built a typeface out of duct tape. Every letter was made by hand, then photographed, cut out and laid out into a full type specimen book. The tape did a lot of the work: its creases, shine and torn edges gave each letter a texture you can't fake digitally. I designed the letters as a bold, almost blackletter style, which plays off that rough material and gives the whole specimen a grungy, cut-and-paste, sticker-art feel.", "p5": "A lyric video for \"Send Me On My Way\" by Lucki, built entirely from type in After Effects. Most of it runs on a plain, simple sans serif, because Lucki's lines sound simple on the surface. Then a literary serif cuts in on key words to catch the metaphors and wit hiding underneath. The two typefaces play the same game he does: easy to hear, deeper than they look.", "p6": "A risograph type specimen for Majorie, a classic book typeface built for easy reading. Risograph prints one ink at a time, so I built over 50 separate pages to layer colors, sometimes stacking three passes on a single spread to mix brand-new shades. Instead of only showing it off in paragraphs, I pushed its round, balanced shapes into patterns and images. The numbers become balloons, bubbles or pool balls, the letters repeat into symmetrical designs, and one spread scales the type up into a flag. Its readability is what makes it so flexible: it can turn into almost anything.", "p7": "Cattle Shake is a milkshake truck I invented for ranch hands working Texas cattle country. It pulls up to the job site with something cold. The logo stacks two milkshakes on the brim of a cowboy hat, and the burnt orange nods to the Texas Longhorns. The rest of the system stays in that world, with rope-style patterns, a bold Texas outline and a playful, classic milkshake-shop look.", "p8": "Sona is a concept desktop app for music streaming, built around one problem: most streaming apps make you dig for what you want, one small row at a time. Sona puts everything you love on one screen at once. I took inspiration from Japanese packaging design, where every inch is packed with information but still feels organized, and applied that energy to an interface. Open it up and you get hit with all your music at once, ready to play.", "p9": "A one-day challenge: I was handed another designer's brand guidelines for Constellation, a low-calorie sports drink, and had to create its packaging and an ad.", "p10": "Passion project vinyl cover for Dean Blunt, an artist whose album covers often stay minimal, sometimes just a single solid color. I wanted to see what his music would look like with more of its mood on the surface. So I built an eerie, grungy image in Photoshop that leans into the uneasy, hazy feeling of his sound, and paired it with simple type so the atmosphere does the talking."};
+  document.querySelectorAll('article.proj--filled').forEach(function(a){
+    var text = D[a.id]; if(!text) return;
+    var label = a.querySelector('.proj-label'), pages = a.querySelector('.proj-pages');
+    if(!label || !pages || !pages.firstElementChild) return;
+    var first = pages.firstElementChild, wrap;
+    if(first.tagName === 'VIDEO'){ wrap = pages; }
+    else { wrap = document.createElement('div'); first.parentNode.insertBefore(wrap, first); wrap.appendChild(first); }
+    wrap.classList.add('desc-wrap');
+    var ov = document.createElement('div');
+    ov.className = 'desc-overlay'; ov.id = a.id + '-desc';
+    var t = text.replace(/(\w)-(\w)/g, '$1‑$2');
+    var w = t.split(' '); if (w.length > 3) { t = w.slice(0, -3).join(' ') + ' ' + w.slice(-3).join(' '); }
+    var p = document.createElement('p'); p.textContent = t; ov.appendChild(p);
+    wrap.appendChild(ov);
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'desc-toggle';
+    b.setAttribute('aria-expanded','false'); b.setAttribute('aria-controls', ov.id);
+    b.textContent = 'See full description';
+    label.appendChild(b);
+    b.addEventListener('click', function(){
+      var open = b.getAttribute('aria-expanded') !== 'true';
+      b.setAttribute('aria-expanded', open);
+      b.textContent = open ? 'Close full description' : 'See full description';
+      ov.classList.toggle('is-open', open);
+    });
+  });
+})();
+</script>
 </body>
 </html>
